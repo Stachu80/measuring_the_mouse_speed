@@ -1,0 +1,39 @@
+
+Development
+Code Splitting
+Caching
+Authoring Libraries
+Environment Variables
+Build Performance
+Content Security Policies
+Development - Vagrant
+Dependency Management
+Output Management
+Installation
+Scaffolding
+Hot Module Replacement
+Tree Shaking
+Production
+Lazy Loading
+Shimming
+TypeScript
+Basic Setup
+Loader
+Source Maps
+Using Third Party Libraries
+Importing Other Assets
+Build Performance
+Progressive Web Application
+Public Path
+Integrations
+EDIT DOCUMENT
+|PRINT DOCUMENT
+TypeScript
+This guide stems from the Getting Started guide.
+
+TypeScript is a typed superset of JavaScript that compiles to plain JavaScript. In this guide we will learn how to integrate TypeScript with webpack.
+
+Basic Setup
+First install the TypeScript compiler and loader by running:
+
+npm install --save-dev typescript ts-loader

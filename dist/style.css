@@ -1,0 +1,13 @@
+
+#stripe-border {
+    position: absolute;
+    width: 60%;
+    min-height:50px blue;
+    border: 1px solid black
+}
+
+#stripe {
+    width: 1px;
+    min-height: 50px;
+    background-color: blue
+}

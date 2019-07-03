@@ -1,23 +1,27 @@
 import { fromEvent } from "rxjs";
 import { bufferTime, map, pairwise, tap } from "rxjs/operators";
+import { interpolate } from 'd3-interpolate'
+import './style.css'
+
+const colorInterpolator = interpolate('green', 'red')
+
+class Point {
+  constructor(readonly x: number, readonly y: number) {
+
+  }
+}
 
 const element = document.getElementById("stripe");
 const coordinatesFromEvent = () =>
-  map(e => ({
-    coordinates: {
-      x: (e as MouseEvent).clientX,
-      y: (e as MouseEvent).clientY
-    }
-  }));
+  map((e: MouseEvent) => new Point(e.clientX, e.clientY));
 
 const getDistance = () =>
-  map(e => {
-    const element = e as any;
+  map(([p1, p2]: [Point, Point]) => {
     return distance(
-      element[0].coordinates.x,
-      element[1].coordinates.x,
-      element[0].coordinates.y,
-      element[1].coordinates.y
+      p1.x,
+      p2.x,
+      p1.y,
+      p2.y
     );
   });
 
@@ -28,20 +32,24 @@ const distance = (x1: number, x2: number, y1: number, y2: number): number => {
 };
 
 const mediumLenght = () =>
-  map(e => {
-    const element = e as Array<number>;
-    const num = element.reduce((acc, val) => acc + val, 0);
-    return num != 0 ? num / element.length : num;
+  map((e: Array<number>) => {
+    const num = e.reduce((acc, val) => acc + val, 0);
+    return num != 0 ? num / e.length : num;
   });
+
+const clampMax = (max: number) =>
+  map((val: number) => Math.min(max, val));
 
 const mouseMove$ = fromEvent(document, "mousemove").pipe(
   coordinatesFromEvent(),
   pairwise(),
   getDistance(),
-  bufferTime(100),
-  mediumLenght()
+  bufferTime(50),
+  mediumLenght(),
+  clampMax(100)
 );
 
 mouseMove$.subscribe(speed => {
-  element.style.width = speed + "px";
+  element.style.backgroundColor = colorInterpolator(speed / 100);
+  element.style.transform = `scaleX(${speed / 100})`;  
 });
